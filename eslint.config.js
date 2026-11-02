@@ -1,0 +1,35 @@
+export default [
+  { ignores: ['node_modules/**', 'android/**', 'docs/screenshots/**'] },
+  {
+    files: ['**/*.js', '**/*.mjs'],
+    languageOptions: {
+      ecmaVersion: 'latest',
+      sourceType: 'module',
+      globals: {
+        window: 'readonly',
+        document: 'readonly',
+        localStorage: 'readonly',
+        Audio: 'readonly',
+        matchMedia: 'readonly',
+        setTimeout: 'readonly',
+        clearTimeout: 'readonly',
+        console: 'readonly',
+        process: 'readonly',
+        URL: 'readonly',
+        EventTarget: 'readonly',
+        CustomEvent: 'readonly',
+        Buffer: 'readonly',
+        fetch: 'readonly',
+        AbortController: 'readonly',
+      },
+    },
+    rules: {
+      'no-undef': 'error',
+      'no-unused-vars': ['error', { argsIgnorePattern: '^_', caughtErrorsIgnorePattern: '^_' }],
+      eqeqeq: ['error', 'always'],
+      'no-unreachable': 'error',
+      'no-constant-condition': 'error',
+      'no-duplicate-imports': 'error',
+    },
+  },
+];

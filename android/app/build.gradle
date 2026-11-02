@@ -1,0 +1,18 @@
+plugins { id 'com.android.application' }
+
+android {
+    namespace 'com.littlewild.alphabet'
+    compileSdk 36
+    defaultConfig {
+        applicationId 'com.littlewild.alphabet'
+        minSdk 26
+        targetSdk 36
+        versionCode 4
+        versionName '0.4.0'
+    }
+    sourceSets { main { assets.srcDirs = ['../../web'] } }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}

@@ -1,0 +1,11 @@
+node_modules/
+android/.gradle/
+**/build/
+web/audio/
+web/phrases/
+web/fonts/
+docs/screenshots/
+android/gradle/wrapper/
+android/gradlew
+android/gradlew.bat
+LICENSE*
