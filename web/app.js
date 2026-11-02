@@ -1,6 +1,6 @@
 import * as learning from './learning.js';
 import * as art from './illustrations/index.js';
-import { ANIMALS, Animal } from './content.js';
+import { ANIMALS, Animal, LETTERS } from './content.js';
 import { html } from './illustrations/svg.js';
 import { AudioPlayer, SoundEffects } from './audio-player.js';
 import { SpeechInput } from './speech-input.js';
@@ -309,7 +309,7 @@ function startLearn(index) {
 function renderLearn() {
   const stage = learning.stages[saved.stage],
     letter = stage.letters[learnIndex],
-    name = learning.objects[learning.letters.indexOf(letter)];
+    name = LETTERS[letter].object;
   const token = sceneToken;
   progress((learnIndex / stage.letters.length) * 100, `${learnIndex + 1}/${stage.letters.length}`);
   byId('lesson-content').innerHTML = html`<span class="eyebrow">${stage.letters.join(' · ')}</span>
