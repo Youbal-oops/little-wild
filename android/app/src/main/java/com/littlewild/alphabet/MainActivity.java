@@ -38,6 +38,7 @@ public final class MainActivity extends Activity {
     private boolean pendingPermission = false;
     private boolean speechActive = false;
     private int speechGeneration = 0;
+    private int voiceRequest = 0;
 
     @Override public void onCreate(Bundle state) {
         super.onCreate(state);
@@ -98,7 +99,7 @@ public final class MainActivity extends Activity {
 
     public final class VoiceBridge {
         @JavascriptInterface public boolean isAvailable(){return SpeechRecognizer.isRecognitionAvailable(MainActivity.this);}
-        @JavascriptInterface public void start(){runOnUiThread(new Runnable(){@Override public void run(){requestVoice();}});}
+        @JavascriptInterface public void start(final int request){runOnUiThread(new Runnable(){@Override public void run(){voiceRequest=request;requestVoice();}});}
         @JavascriptInterface public void cancel(){runOnUiThread(new Runnable(){@Override public void run(){cancelVoice();}});}
     }
 
@@ -110,7 +111,7 @@ public final class MainActivity extends Activity {
             requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO},MICROPHONE_REQUEST);
             return;
         }
-        startVoice();
+        startVoice(true);
     }
     @Override public void onRequestPermissionsResult(int request,String[] permissions,int[] results){
         super.onRequestPermissionsResult(request,permissions,results);
@@ -119,10 +120,11 @@ public final class MainActivity extends Activity {
         if(results.length>0&&results[0]==PackageManager.PERMISSION_GRANTED)emit("ready",null);
         else emit("permission",null);
     }
-    private void startVoice(){
+    private void startVoice(final boolean preferOnDevice){
         final int token=++speechGeneration;speechActive=true;
+        final boolean onDevice=preferOnDevice && Build.VERSION.SDK_INT>=31 && SpeechRecognizer.isOnDeviceRecognitionAvailable(this);
         try{
-            if(Build.VERSION.SDK_INT>=31&&SpeechRecognizer.isOnDeviceRecognitionAvailable(this))recognizer=SpeechRecognizer.createOnDeviceSpeechRecognizer(this);
+            if(onDevice)recognizer=SpeechRecognizer.createOnDeviceSpeechRecognizer(this);
             else recognizer=SpeechRecognizer.createSpeechRecognizer(this);
             recognizer.setRecognitionListener(new RecognitionListener(){
                 private boolean current(){return speechActive&&token==speechGeneration;}
@@ -132,7 +134,24 @@ public final class MainActivity extends Activity {
                 @Override public void onBufferReceived(byte[] buffer){}
                 @Override public void onEndOfSpeech(){if(current())emit("processing",null);}
                 @Override public void onError(int code){
-                    if(!current())return;speechActive=false;
+                    if(!current())return;
+                    // A recognizer can exist without an English model installed.
+                    // Retry the system service once, within this same user-started session.
+                    if(onDevice && (code==SpeechRecognizer.ERROR_LANGUAGE_NOT_SUPPORTED
+                            || code==SpeechRecognizer.ERROR_LANGUAGE_UNAVAILABLE
+                            || code==SpeechRecognizer.ERROR_CLIENT
+                            || code==SpeechRecognizer.ERROR_SERVER
+                            || code==SpeechRecognizer.ERROR_RECOGNIZER_BUSY)) {
+                        cancelVoice();
+                        emit("starting",null);
+                        final int retryGeneration=speechGeneration;
+                        webView.postDelayed(new Runnable(){@Override public void run(){
+                            if(retryGeneration==speechGeneration && !isFinishing()) startVoice(false);
+                        }
+                        },250);
+                        return;
+                    }
+                    speechActive=false;
                     String status=code==SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS?"permission":code==SpeechRecognizer.ERROR_NETWORK||code==SpeechRecognizer.ERROR_NETWORK_TIMEOUT?"network":code==SpeechRecognizer.ERROR_LANGUAGE_NOT_SUPPORTED||code==SpeechRecognizer.ERROR_LANGUAGE_UNAVAILABLE?"language":"uncertain";
                     emit(status,null);
                 }
@@ -149,9 +168,15 @@ public final class MainActivity extends Activity {
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE,"en-US");
             intent.putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS,false);
             intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS,4);
-            intent.putExtra(RecognizerIntent.EXTRA_PREFER_OFFLINE,true);
+            intent.putExtra(RecognizerIntent.EXTRA_PREFER_OFFLINE,onDevice);
+            intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_MINIMUM_LENGTH_MILLIS,5000L);
+            intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS,1800L);
             recognizer.startListening(intent);
-        }catch(Exception exception){cancelVoice();emit("unavailable",null);}
+        }catch(Exception exception){
+            cancelVoice();
+            if(onDevice) startVoice(false);
+            else emit("unavailable",null);
+        }
     }
     private void cancelVoice(){
         pendingPermission=false;speechActive=false;speechGeneration++;
@@ -160,7 +185,7 @@ public final class MainActivity extends Activity {
     private void emit(String status,ArrayList<String> results){
         if(webView==null)return;
         try{
-            JSONObject detail=new JSONObject();detail.put("status",status);
+            JSONObject detail=new JSONObject();detail.put("status",status);detail.put("request",voiceRequest);
             if(results!=null)detail.put("results",new JSONArray(results));
             webView.evaluateJavascript("window.dispatchEvent(new CustomEvent('littlewild-voice',{detail:"+detail.toString()+"}))",null);
         }catch(Exception ignored){}

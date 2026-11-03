@@ -106,3 +106,29 @@ test('temporary speech service errors allow another attempt', () => {
   assert.equal(input.active, true);
   input.dispose();
 });
+
+test('native startup waits for ready-to-listen and survives service fallback', () => {
+  const { input, states, emit } = speechFixture();
+  input.start();
+  assert.equal(states.at(-1), 'starting');
+  emit({ status: 'starting', request: input.generation });
+  assert.equal(input.active, true);
+  emit({ status: 'listening', request: input.generation });
+  assert.equal(states.at(-1), 'listening');
+  input.dispose();
+});
+
+test('a cancelled native session cannot terminate or answer the next attempt', () => {
+  const { input, results, states, emit } = speechFixture();
+  input.start();
+  const oldRequest = input.generation;
+  input.start();
+  emit({ status: 'uncertain', request: oldRequest });
+  emit({ status: 'results', request: oldRequest, results: ['ay'] });
+  assert.equal(input.active, true);
+  assert.deepEqual(results, []);
+  assert.equal(states.at(-1), 'starting');
+  emit({ status: 'results', request: input.generation, results: ['bee'] });
+  assert.deepEqual(results, [['bee']]);
+  input.dispose();
+});

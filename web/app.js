@@ -588,7 +588,8 @@ function onSpeechStatus(status) {
   if (status === 'ready') {
     voiceStatus('✓');
     guide(byId('mic-button'));
-  } else if (status === 'listening') voiceStatus('● ● ●', true);
+  } else if (status === 'starting') voiceStatus('◌');
+  else if (status === 'listening') voiceStatus('● ● ●', true);
   else if (status === 'processing') voiceStatus('…');
   else voiceError(status);
 }

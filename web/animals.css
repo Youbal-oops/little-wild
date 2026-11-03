@@ -1,0 +1,171 @@
+/* Each part has its own pivot so the animals move like small puppets. */
+.character .character-body {
+  transform-origin: 160px 290px;
+  animation: animal-breathe 5s ease-in-out infinite;
+}
+.character .animal-head {
+  transform-box: view-box;
+  transform-origin: 160px 195px;
+  animation: animal-look 7s ease-in-out infinite;
+}
+.character .eyes {
+  animation: animal-blink 6.8s linear infinite;
+}
+.animal-fox .eyes {
+  animation-delay: -2.3s;
+}
+.animal-elephant .eyes {
+  animation-delay: -4.1s;
+}
+.character .fox-tail {
+  transform-box: view-box;
+  transform-origin: 215px 260px;
+  animation: fox-swish 4.5s ease-in-out infinite;
+}
+.character .elephant-trunk {
+  transform-origin: 151px 164px;
+  animation: trunk-curl 5s ease-in-out infinite;
+}
+.character .ear-left,
+.character .ear-right {
+  transform-box: view-box;
+  transform-origin: 160px 125px;
+  animation: elephant-ears 6s ease-in-out infinite;
+}
+.character .ear-right {
+  animation-direction: reverse;
+}
+.character .scarf-tip {
+  transform-origin: 177px 215px;
+  animation: scarf-flutter 4s ease-in-out infinite;
+}
+.mic-active .character .animal-head {
+  animation: attentive-tilt 1.2s ease-out forwards;
+}
+.mic-active .character .ear-left {
+  transform: rotate(-8deg);
+  animation: none;
+}
+.mic-active .character .ear-right {
+  transform: rotate(8deg);
+  animation: none;
+}
+.mic-active .character .character-body {
+  animation-duration: 7s;
+}
+.quiz-character.celebrate .character,
+.summary-story .character {
+  animation: animal-hop 800ms ease-out 3;
+}
+.speech-scene.celebrate .character {
+  animation: animal-hop 800ms ease-out 3;
+}
+.summary-story .animal-fox {
+  animation-delay: 150ms;
+}
+.summary-story .animal-elephant {
+  animation-delay: 300ms;
+}
+@keyframes animal-breathe {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-2px) scale(1.008, 1.015);
+  }
+}
+@keyframes animal-look {
+  0%,
+  25%,
+  100% {
+    transform: rotate(0);
+  }
+  42%,
+  60% {
+    transform: rotate(-3deg);
+  }
+  78% {
+    transform: rotate(2deg);
+  }
+}
+@keyframes animal-blink {
+  0%,
+  42%,
+  46%,
+  83%,
+  87%,
+  100% {
+    transform: scaleY(1);
+  }
+  44%,
+  85% {
+    transform: scaleY(0.08);
+  }
+}
+@keyframes fox-swish {
+  0%,
+  100% {
+    transform: rotate(-4deg);
+  }
+  50% {
+    transform: rotate(9deg);
+  }
+}
+@keyframes trunk-curl {
+  0%,
+  65%,
+  100% {
+    transform: rotate(0);
+  }
+  35% {
+    transform: rotate(-9deg);
+  }
+}
+@keyframes elephant-ears {
+  0%,
+  65%,
+  100% {
+    transform: rotate(0);
+  }
+  30%,
+  45% {
+    transform: rotate(4deg);
+  }
+}
+@keyframes scarf-flutter {
+  0%,
+  100% {
+    transform: rotate(-3deg);
+  }
+  50% {
+    transform: rotate(6deg);
+  }
+}
+@keyframes attentive-tilt {
+  to {
+    transform: rotate(-7deg);
+  }
+}
+@keyframes animal-hop {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  20% {
+    transform: translateY(2px) scale(1.04, 0.96);
+  }
+  50% {
+    transform: translateY(-12px) scale(0.98, 1.02);
+  }
+  80% {
+    transform: translateY(0) scale(1.03, 0.97);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .character,
+  .character * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

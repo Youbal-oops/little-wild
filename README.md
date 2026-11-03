@@ -81,6 +81,10 @@ Read [`docs/PRIVACY.md`](docs/PRIVACY.md) before publishing. It records what the
 
 Please read [`CONTRIBUTING.md`](CONTRIBUTING.md), [`SECURITY.md`](SECURITY.md), and [`THIRD_PARTY.md`](THIRD_PARTY.md). Do not add tracking, advertising, accounts, an external analytics SDK, or new child data collection without a documented privacy and Play Families review.
 
+## Contributors
+
+- [jessieliao87](https://github.com/jessieliao87)
+
 ## License
 
 The Little Wild source code and original visual assets are licensed under [GPL-3.0-only](LICENSE). Distributing a modified version means providing the corresponding source under GPLv3. The bundled Nunito font remains under its own SIL Open Font License. The temporary synthetic teaching audio needs provenance review or replacement before any public-store release; see [`THIRD_PARTY.md`](THIRD_PARTY.md).

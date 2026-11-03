@@ -37,11 +37,11 @@ export class SpeechInput {
     }
     this.active = true;
     const generation = this.generation;
-    this.onStatus('listening');
+    this.onStatus('starting');
     this.timer = setTimeout(() => this.fail('uncertain', generation), this.timeout);
     try {
       if (this.nativeBridge) {
-        this.nativeBridge.start();
+        this.nativeBridge.start(generation);
         return;
       }
       const recognizer = new this.Recognition();
@@ -50,6 +50,9 @@ export class SpeechInput {
       recognizer.continuous = false;
       recognizer.interimResults = false;
       recognizer.maxAlternatives = 4;
+      recognizer.onstart = () => {
+        if (this.active && generation === this.generation) this.onStatus('listening');
+      };
       recognizer.onresult = (event) => {
         const alternatives = Array.from(event.results[0], (result) => result.transcript);
         this.finish(alternatives, generation);
@@ -83,6 +86,13 @@ export class SpeechInput {
 
   receiveNativeEvent(detail) {
     if (!detail || typeof detail !== 'object') return;
+    if (
+      detail.status !== 'ready' &&
+      detail.status !== 'permission' &&
+      detail.request !== undefined &&
+      detail.request !== this.generation
+    )
+      return;
     if (detail.status === 'ready') {
       this.stop();
       this.onStatus('ready');
@@ -91,7 +101,7 @@ export class SpeechInput {
     if (!this.active) return;
     if (detail.status === 'results') {
       this.finish(Array.isArray(detail.results) ? detail.results : [], this.generation);
-    } else if (detail.status === 'listening' || detail.status === 'processing') {
+    } else if (['starting', 'listening', 'processing'].includes(detail.status)) {
       this.onStatus(detail.status);
     } else this.fail(detail.status, this.generation);
   }
@@ -104,7 +114,7 @@ export class SpeechInput {
     const recognizer = this.recognizer;
     this.recognizer = null;
     if (recognizer) {
-      recognizer.onresult = recognizer.onerror = recognizer.onend = null;
+      recognizer.onstart = recognizer.onresult = recognizer.onerror = recognizer.onend = null;
       try {
         recognizer.abort();
       } catch {

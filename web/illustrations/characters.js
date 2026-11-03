@@ -2,211 +2,192 @@ import { Animal } from '../content.js';
 import { html, svg } from './svg.js';
 
 function eyes() {
-  return `<g class="eyes"><ellipse cx="124" cy="127" rx="29" ry="35" fill="white"/><ellipse cx="195" cy="127" rx="29" ry="35" fill="white"/><ellipse cx="131" cy="131" rx="14" ry="20" fill="#88501a"/><ellipse cx="188" cy="131" rx="14" ry="20" fill="#88501a"/><circle cx="135" cy="124" r="5" fill="white"/><circle cx="192" cy="124" r="5" fill="white"/></g><ellipse cx="105" cy="161" rx="15" ry="12" fill="#ff9b9d"/><ellipse cx="214" cy="161" rx="15" ry="12" fill="#ff9b9d"/>`;
+  return html`<g class="eyes">
+      <ellipse cx="124" cy="132" rx="17" ry="23" fill="#fff" />
+      <ellipse cx="196" cy="132" rx="17" ry="23" fill="#fff" />
+      <ellipse cx="128" cy="136" rx="10" ry="15" fill="#253b46" />
+      <ellipse cx="192" cy="136" rx="10" ry="15" fill="#253b46" />
+      <circle cx="131" cy="130" r="4" fill="#fff" /><circle
+        cx="195"
+        cy="130"
+        r="4"
+        fill="#fff"
+      /> </g
+    ><g fill="#ff9eac" opacity=".85"
+      ><ellipse cx="103" cy="163" rx="15" ry="9" /><ellipse cx="217" cy="163" rx="15" ry="9"
+    /></g>`;
 }
-
-function drawFox(mouth) {
-  return html`<path
-      class="fox-tail"
-      d="M224 263q101-9 67-105-7 38-53 45-50 6-49 44Z"
-      fill="#ff8800"
-    /><path d="M278 203q24-20 13-45-7 26-28 34Z" fill="#fff4c9" /><ellipse
-      cx="115"
-      cy="281"
-      rx="32"
-      ry="21"
-      fill="#e96b00"
-    /><ellipse cx="205" cy="281" rx="32" ry="21" fill="#e96b00" /><ellipse
-      cx="160"
-      cy="230"
-      rx="70"
-      ry="66"
-      fill="#ff9600"
-    /><ellipse cx="160" cy="233" rx="43" ry="48" fill="#fff5cf" /><g class="animal-head"
-      ><path d="M76 113 75 23q0-15 13-5l54 52m36 0 55-52q13-10 12 6l-2 91" fill="#ff8800" /><path
-        d="m88 77 1-34 29 32m86 0 28-32-1 34"
-        fill="#bd5a0b"
-      /><path
-        d="M58 123q3-68 102-70 98 2 103 70l-16 14 16 12q-26 54-103 57-77-3-103-57l17-12Z"
-        fill="#ff9b0b"
-      /><path
-        d="M62 146q49-21 98 24 48-45 98-24-28 48-98 54-71-6-98-54"
-        fill="#fff8db"
-      />${eyes()}<path d="M144 166q15-10 31 0-4 16-16 16t-15-16" fill="#854715" />${mouth}</g
-    ><ellipse
-      class="arm-left"
-      cx="96"
-      cy="227"
-      rx="23"
-      ry="37"
-      fill="#ff8900"
-      transform="rotate(-22 96 227)"
-    /><ellipse
-      class="arm-right"
-      cx="226"
-      cy="227"
-      rx="23"
-      ry="37"
-      fill="#ff8900"
-      transform="rotate(22 226 227)"
+function paws(color) {
+  return html`<g fill="${color}"
+      ><ellipse cx="111" cy="281" rx="33" ry="20" /><ellipse cx="209" cy="281" rx="33" ry="20"
+    /></g>
+    <g fill="#fff" opacity=".18"
+      ><ellipse cx="108" cy="277" rx="16" ry="6" /><ellipse cx="212" cy="277" rx="16" ry="6"
+    /></g>`;
+}
+function scarf(color) {
+  return html`<path d="M109 196q51 20 102 0l-14 28-37-9-39 10Z" fill="${color}" />
+    <path class="scarf-tip" d="m179 214 27 33-31 5-10-34Z" fill="${color}" />
+    <path
+      d="m132 207 19 5"
+      stroke="#fff"
+      stroke-opacity=".5"
+      stroke-width="5"
+      stroke-linecap="round"
     />`;
 }
-
-function drawElephant(_mouth) {
-  return html`<ellipse cx="111" cy="280" rx="32" ry="23" fill="#53b7e8" /><ellipse
-      cx="210"
-      cy="280"
-      rx="32"
-      ry="23"
-      fill="#53b7e8"
-    /><ellipse cx="160" cy="231" rx="76" ry="67" fill="#79ceff" /><ellipse
-      cx="160"
-      cy="239"
-      rx="46"
-      ry="45"
-      fill="#b2eaff"
-    /><g class="animal-head"
-      ><ellipse
-        class="ear-left"
-        cx="61"
-        cy="120"
-        rx="49"
-        ry="65"
-        fill="#66c7f9"
-        transform="rotate(-15 61 120)" /><ellipse
-        cx="61"
-        cy="121"
-        rx="32"
-        ry="44"
-        fill="#ffa8c4"
-        transform="rotate(-15 61 121)" /><ellipse
-        class="ear-right"
-        cx="260"
-        cy="120"
-        rx="49"
-        ry="65"
-        fill="#66c7f9"
-        transform="rotate(15 260 120)" /><ellipse
-        cx="260"
-        cy="121"
-        rx="32"
-        ry="44"
-        fill="#ffa8c4"
-        transform="rotate(15 260 121)" /><ellipse
-        cx="160"
-        cy="120"
-        rx="93"
-        ry="87"
-        fill="#81d2ff" /><path d="M116 49q44-35 88 0" fill="#ffe647" /><ellipse
-        cx="160"
-        cy="30"
-        rx="24"
-        ry="17"
-        fill="#ffce19" />${eyes()}<path
-        d="M112 177q-21 22-20-9m116 9q21 22 20-9"
-        fill="#fff9d5" /><path
-        class="elephant-trunk"
-        d="M160 164v30q0 25 24 25 25 0 25-24"
-        stroke="#6dc5f6"
-        stroke-width="33"
-        stroke-linecap="round"
-        fill="none" /><path
-        d="M150 176h20m-20 12h20"
-        stroke="#4eafe7"
-        stroke-width="3"
-        stroke-linecap="round" /></g
-    ><ellipse
-      class="arm-left"
-      cx="89"
-      cy="231"
-      rx="24"
-      ry="35"
-      fill="#5bbfee"
-      transform="rotate(-20 89 231)"
-    /><ellipse
-      class="arm-right"
-      cx="232"
-      cy="231"
-      rx="24"
-      ry="35"
-      fill="#5bbfee"
-      transform="rotate(20 232 231)"
-    />`;
-}
-
 function drawPanda(mouth) {
-  return html`<ellipse cx="111" cy="281" rx="34" ry="23" fill="#354e59" /><ellipse
-      cx="208"
-      cy="281"
-      rx="34"
-      ry="23"
-      fill="#354e59"
-    /><ellipse cx="160" cy="229" rx="76" ry="67" fill="#fffdf3" /><ellipse
-      cx="160"
-      cy="247"
-      rx="43"
-      ry="27"
-      fill="#e6f1ea"
-    /><g class="animal-head"
-      ><circle cx="93" cy="59" r="34" fill="#354e59" /><circle
-        cx="227"
-        cy="59"
-        r="34"
-        fill="#354e59" /><circle cx="93" cy="59" r="18" fill="#617782" /><circle
-        cx="227"
-        cy="59"
-        r="18"
-        fill="#617782" /><ellipse cx="160" cy="124" rx="104" ry="88" fill="#fffdf3" /><ellipse
-        cx="121"
-        cy="128"
-        rx="39"
-        ry="43"
-        fill="#354e59"
-        transform="rotate(18 121 128)" /><ellipse
-        cx="199"
-        cy="128"
-        rx="39"
-        ry="43"
-        fill="#354e59"
-        transform="rotate(-18 199 128)" />${eyes()}<path
-        d="M145 168q15-9 30 0-2 16-15 16t-15-16"
-        fill="#354e59" />${mouth}<path
-        d="M143 43q0-25 18-28 4 13-5 23 12-17 26-11-7 21-29 19"
-        fill="#85d318" /></g
-    ><ellipse
-      class="arm-left"
-      cx="92"
-      cy="229"
-      rx="24"
-      ry="37"
-      fill="#354e59"
-      transform="rotate(-25 92 229)"
-    /><ellipse
-      class="arm-right"
-      cx="229"
-      cy="229"
-      rx="24"
-      ry="37"
-      fill="#354e59"
-      transform="rotate(25 229 229)"
-    />`;
+  return html`${paws('#263e49')}
+    <ellipse cx="160" cy="236" rx="67" ry="57" fill="#edf8ef" />
+    <path d="M100 222q60 28 120 0v22q-60 28-120 0Z" fill="#304b55" />
+    <g class="arm-left"><ellipse cx="94" cy="232" rx="22" ry="36" fill="#304b55" /></g>
+    <g class="arm-right"
+      ><ellipse cx="226" cy="230" rx="22" ry="36" fill="#304b55" /><ellipse
+        cx="233"
+        cy="243"
+        rx="9"
+        ry="12"
+        fill="#526a73"
+    /></g>
+    ${scarf('#20bba3')}
+    <g class="animal-head">
+      <circle cx="91" cy="66" r="31" fill="#304b55" /><circle
+        cx="229"
+        cy="66"
+        r="31"
+        fill="#304b55"
+      />
+      <circle cx="91" cy="66" r="16" fill="#58717c" /><circle
+        cx="229"
+        cy="66"
+        r="16"
+        fill="#58717c"
+      />
+      <path d="M69 128q-1-80 91-80t91 80q5 78-91 80t-91-80Z" fill="#fffdf0" />
+      <path
+        d="M83 109q6-49 54-49"
+        fill="none"
+        stroke="#fff"
+        stroke-width="8"
+        stroke-linecap="round"
+      />
+      <ellipse cx="122" cy="135" rx="29" ry="35" fill="#304b55" transform="rotate(19 122 135)" />
+      <ellipse cx="198" cy="135" rx="29" ry="35" fill="#304b55" transform="rotate(-19 198 135)" />
+      ${eyes()}<ellipse cx="160" cy="173" rx="30" ry="23" fill="#f4edda" />
+      <path d="M147 164q13-8 26 0-1 12-13 13t-13-13Z" fill="#304b55" />${mouth}
+      <path d="M153 49q-7-26 21-31 9 22-21 31" fill="#7dd441" /><path
+        d="m157 44 10-15"
+        stroke="#4eb639"
+        stroke-width="3"
+      />
+    </g>`;
 }
-
+function drawFox(mouth) {
+  return html`<g class="fox-tail"
+      ><path d="M216 267q92-3 71-111-17 44-59 50-51 5-44 35Z" fill="#ed791c" />
+      <path d="M259 196q20-15 28-40 9 41-3 65l-12-12-16 7Z" fill="#fff5d9"
+    /></g>
+    ${paws('#c76b24')}<ellipse cx="160" cy="236" rx="64" ry="57" fill="#ff981e" />
+    <ellipse cx="160" cy="240" rx="37" ry="45" fill="#fff2d3" />
+    <g class="arm-left"><ellipse cx="96" cy="230" rx="21" ry="35" fill="#f5871e" /></g>
+    <g class="arm-right"><ellipse cx="224" cy="230" rx="21" ry="35" fill="#f5871e" /></g>
+    ${scarf('#468ceb')}
+    <g class="animal-head">
+      <path d="m77 108-7-77q0-17 14-6l54 43m44 0 54-43q14-11 14 6l-7 77" fill="#ef811e" />
+      <path d="m88 82-2-35 28 30m92 0 28-30-2 35" fill="#ffbf8c" />
+      <path
+        d="M64 123q4-69 96-69t96 69l14 21-29 7 13 12q-32 44-94 44t-94-44l13-12-29-7Z"
+        fill="#ff9e28"
+      />
+      <path d="M65 150q49-8 95 23 46-31 95-23-27 51-95 54-68-3-95-54" fill="#fff5df" />
+      <path d="m148 59 12-16 6 15 14-9-4 16" fill="#ffb545" />
+      ${eyes()}<path d="M145 165q15-9 30 0-3 14-15 14t-15-14Z" fill="#65412f" />${mouth}
+    </g>`;
+}
+function drawElephant(mouth) {
+  return html`${paws('#579bd3')}<ellipse cx="160" cy="235" rx="71" ry="59" fill="#80c9f2" />
+    <ellipse cx="160" cy="243" rx="42" ry="40" fill="#a9e0fa" />
+    <g class="arm-left"><ellipse cx="91" cy="231" rx="24" ry="36" fill="#69b9e8" /></g>
+    <g class="arm-right"><ellipse cx="229" cy="231" rx="24" ry="36" fill="#69b9e8" /></g>
+    ${scarf('#ffba35')}
+    <g class="animal-head">
+      <g class="ear-left"
+        ><ellipse cx="71" cy="121" rx="47" ry="62" fill="#64b3e5" /><ellipse
+          cx="71"
+          cy="122"
+          rx="31"
+          ry="43"
+          fill="#dda8ca"
+      /></g>
+      <g class="ear-right"
+        ><ellipse cx="249" cy="121" rx="47" ry="62" fill="#64b3e5" /><ellipse
+          cx="249"
+          cy="122"
+          rx="31"
+          ry="43"
+          fill="#dda8ca"
+      /></g>
+      <path d="M82 126q0-75 78-75t78 75v21q0 57-78 57t-78-57Z" fill="#8ad1f5" />
+      <path
+        d="M107 93q13-24 36-26"
+        fill="none"
+        stroke="#c6edff"
+        stroke-width="8"
+        stroke-linecap="round"
+      />
+      <path d="m146 54 9-18 6 18 17-11-5 17" fill="#6cbce9" />
+      ${eyes()}${mouth}
+      <g class="elephant-trunk"
+        ><path
+          d="M148 159v38q0 34 31 34 30 0 34-25"
+          fill="none"
+          stroke="#5daee0"
+          stroke-width="30"
+          stroke-linecap="round" />
+        <path
+          d="M153 163v33q0 28 24 28 24 0 30-20"
+          fill="none"
+          stroke="#91d5f7"
+          stroke-width="21"
+          stroke-linecap="round" />
+        <path
+          d="m144 185 17 1m-16 13 16 1"
+          stroke="#69b8e5"
+          stroke-width="3"
+          stroke-linecap="round"
+      /></g>
+    </g>`;
+}
 const drawings = {
-  [Animal.FOX]: drawFox,
-  [Animal.ELEPHANT]: drawElephant,
   [Animal.PANDA]: drawPanda,
+  [Animal.ELEPHANT]: drawElephant,
+  [Animal.FOX]: drawFox,
 };
 export function animal(kind = Animal.PANDA, mood = 'happy') {
-  const mouth =
-    mood === 'surprised'
-      ? `<ellipse class="mouth" cx="160" cy="184" rx="10" ry="13" fill="#855321"/>`
-      : `<path class="mouth" d="M146 180q14 16 28 0" fill="none" stroke="#915920" stroke-width="5" stroke-linecap="round"/>`;
   const draw = drawings[kind];
   if (!draw) throw new RangeError(`Unknown animal: ${kind}`);
-  const body = draw(mouth);
+  const mouth =
+    mood === 'surprised'
+      ? html`<ellipse class="mouth" cx="160" cy="185" rx="7" ry="9" fill="#65412f" />`
+      : html`<path
+          class="mouth"
+          d="M149 181q11 13 22 0"
+          fill="none"
+          stroke="#65412f"
+          stroke-width="4"
+          stroke-linecap="round"
+        />`;
   return svg(
-    `<ellipse cx="161" cy="302" rx="100" ry="10" fill="#20b394" opacity=".2"/><g class="character-body">${body}</g>`,
+    html`<ellipse
+        class="animal-shadow"
+        cx="160"
+        cy="303"
+        rx="77"
+        ry="8"
+        fill="#167e70"
+        opacity=".15"
+      />
+      <g class="character-body">${draw(mouth)}</g>`,
     '0 0 320 320',
     `character animal-${kind} mood-${mood}`,
   );
